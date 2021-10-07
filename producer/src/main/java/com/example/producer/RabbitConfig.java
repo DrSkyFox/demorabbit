@@ -1,5 +1,6 @@
 package com.example.producer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Scope;
 
 import java.util.Properties;
 
-
+@Slf4j
 @Configuration
 public class RabbitConfig {
 
@@ -25,15 +26,19 @@ public class RabbitConfig {
     @Autowired
     public RabbitConfig(ServiceConfiguration serviceConfiguration) {
         this.serviceConfiguration = serviceConfiguration;
+        log.info(serviceConfiguration.toString());
     }
 
     @Bean
-    public Queue serviceQueue() {
+    public Queue serviceQueue()
+    {
+        log.info(serviceConfiguration.getServiceNameQueue());
         return new Queue(serviceConfiguration.getServiceNameQueue(), false);
     }
 
     @Bean
-    public DirectExchange exchange() {
+    public DirectExchange exchange()
+    {
         return new DirectExchange(serviceConfiguration.getExchangeNameExchange());
     }
 
